@@ -1,0 +1,25 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden; /* Esto elimina la barra de scroll y el corte abajo */
+    background-color: #111;
+}
+
+#mural {
+    display: flex;
+    height: 100vh;
+    width: fit-content;
+    position: absolute;
+    left: 0;
+    top: 0;
+    will-change: transform;
+}
+
+#mural img {
+    height: 100vh;
+    width: auto;
+    display: block;
+    flex-shrink: 0;
+}
