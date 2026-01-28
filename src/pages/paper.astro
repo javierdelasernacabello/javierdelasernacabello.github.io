@@ -69,7 +69,7 @@ const heroUrl = "/cracked.jpeg";
       .strip-text{
         color: var(--text);
         font-weight: 400;
-        font-size: clamp(60px, 55vw, 200px);
+        font-size: clamp(80px, 42vw, 110px);
         line-height: 0.78;
         letter-spacing: 0.01em;
         text-align: left;
@@ -93,7 +93,7 @@ const heroUrl = "/cracked.jpeg";
       .name-text{
         color: #000;
         font-weight: 500;
-        font-size: clamp(90px, 20vw, 190px);
+        font-size: clamp(70px, 16vw, 100px);
         line-height: 0.70;
         text-align: left;
         background: rgba(255,255,255,0.0);
@@ -223,7 +223,7 @@ const heroUrl = "/cracked.jpeg";
         const stripFade = clamp(1 - coverProgress * 4, 0, 1);
         strip.style.opacity = stripFade.toFixed(3);
         
-        const baseStrip = Math.min(window.innerWidth * 0.35, 320);
+        const baseStrip = Math.min(window.innerWidth * 0.5, 450);
         const stripW = Math.max(0, baseStrip * stripFade);
         frame.style.setProperty("--strip-w", `${stripW.toFixed(2)}px`);
 
