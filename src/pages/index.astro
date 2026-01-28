@@ -41,10 +41,11 @@ const heroUrl = "/cracked.jpeg";
         overflow: visible;
       }
 
-      .hero{
+      .hero {
         position: relative;
         overflow: hidden;
-        background: #ffffff;
+        background: #ffffff; /* Asegúrate de que el fondo de la hero sea blanco */
+        width: 100%;
       }
       .hero-img{
         position: absolute;
@@ -69,7 +70,7 @@ const heroUrl = "/cracked.jpeg";
       .strip-text{
         color: var(--text);
         font-weight: 400;
-        font-size: clamp(100px, 120vw, 160px);
+        font-size: clamp(70px, 10vw, 150px);
         line-height: 0.78;
         letter-spacing: 0.0em;
         text-align: left;
@@ -93,7 +94,7 @@ const heroUrl = "/cracked.jpeg";
       .name-text{
         color: #000;
         font-weight: 500;
-        font-size: clamp(100px, 40vw, 180px);
+        font-size: clamp(100px, 100vh, 160px);
         line-height: 0.70;
         text-align: left;
         background: rgba(255,255,255,0.0);
@@ -125,11 +126,11 @@ const heroUrl = "/cracked.jpeg";
         flex-shrink: 0;
       }
 
-      @media (max-width: 700px){
-        .frame{ grid-template-columns: 1fr 32vw; }
-        .strip-text{ font-size: clamp(44px, 14vw, 120px); }
-        .name-text{ font-size: clamp(56px, 16vw, 90px); }
-      }
+    @media (max-width: 700px){
+      /* ELIMINAMOS la línea de grid-template-columns de aquí */
+      .strip-text{ font-size: clamp(80px, 20vw, 120px); } /* Bajamos un poco para que quepa */
+      .name-text{ font-size: clamp(60px, 15vh, 120px); }
+    }
     </style>
   </head>
   <body>
@@ -216,44 +217,58 @@ const heroUrl = "/cracked.jpeg";
         const rect = wrap.getBoundingClientRect();
         const vh = window.innerHeight;
         const total = rect.height - vh;
+        
+        // 1. Calculamos el progreso general (0 a 1)
         const progress = clamp((0 - rect.top) / Math.max(1, total), 0, 1);
 
+        // 2. Parámetros de control
+        const isMobile = window.innerWidth < 700;
+        // coverProgress controla la velocidad de la primera transición
+        const coverProgress = clamp(progress / 0.20, 0, 1); 
+
         // --- 1. PORTFOLIO 2026 (El Strip lateral) ---
-        // Ahora desaparece un poco más lento (entre 0% y 25% del scroll)
-        const coverProgress = clamp(progress / 0.20, 0, 1);
-        const stripFade = clamp(1 - coverProgress * 4, 0, 1);
-        strip.style.opacity = stripFade.toFixed(3);
+        // Reducimos fadeSpeed para que no desaparezca de golpe
+        const fadeSpeed = isMobile ? 3 : 4; 
+        const stripFade = clamp(1 - coverProgress * fadeSpeed, 0, 1);
         
-        const stripPct = window.innerWidth < 700 ? 0.10 : 0.137;
-        const stripMax = window.innerWidth < 700 ? 260 : 350;
+        strip.style.opacity = stripFade.toFixed(3);
+
+        const stripPct = isMobile ? 0.25 : 0.137; 
+        const stripMax = isMobile ? 200 : 350;
         const baseStrip = Math.min(window.innerWidth * stripPct, stripMax);
+
+        // El ancho se reduce suavemente
         const stripW = Math.max(0, baseStrip * stripFade);
         frame.style.setProperty("--strip-w", `${stripW.toFixed(2)}px`);
 
         // --- 2. ZOOM E IMAGEN (Desvanecimiento a blanco) ---
-        // El zoom es constante durante casi todo el proceso
-        const zoomFactor = 2.5;
+        const zoomFactor = isMobile ? 1.5 : 2.5; // Menos zoom en móvil para no pixelar
         const scale = 1 + (coverProgress * zoomFactor);
         hero.style.transform = `scale(${scale.toFixed(4)})`;
 
-        // La imagen empieza a volverse transparente a partir del 35% del scroll
-        // y desaparece totalmente en el 65%.
-        const imageOpacity = clamp(1 - (progress - 0.15) * 20, 0, 1);
+        // Controlamos la opacidad de la imagen de fondo
+        const imageOpacity = clamp(1 - (progress - 0.15) * 15, 0, 1);
         hero.style.opacity = imageOpacity.toFixed(3);
 
         // --- 3. NOMBRE (Javier de la Serna) ---
-        // Aparece cuando el strip ya se ha ido un poco (0.2) 
-        // y se va antes de que el About Me tome el control (0.5)
-        const nameFadeIn = clamp((progress - 0.001) * 10, 0, 1);
-        const nameFadeOut = clamp((progress - 0.16) * 10, 0, 1);
+        const nameFadeIn = clamp((progress - 0.01) * 15, 0, 1);
+        const nameFadeOut = clamp((progress - 0.18) * 15, 0, 1);
         name.style.opacity = (nameFadeIn * (1 - nameFadeOut)).toFixed(3);
 
+        // --- 4. MURAL DE FOTOS ---
         if (muralWrap && mural) {
-          const muralFade = clamp((progress - 0.12) * 12, 0, 1);
+          const muralFade = clamp((progress - 0.15) * 10, 0, 1);
           muralWrap.style.opacity = muralFade.toFixed(3);
-          const muralMove = clamp((progress - 0.21) / 0.79, 0, 1);
-          const maxShift = Math.max(0, mural.scrollWidth - window.innerWidth);
-          mural.style.transform = `translateX(${-muralMove * maxShift}px)`;
+          
+          // Solo activamos el movimiento si el mural es visible
+          if (muralFade > 0) {
+            muralWrap.style.pointerEvents = "auto";
+            const muralMove = clamp((progress - 0.22) / 0.78, 0, 1);
+            const maxShift = Math.max(0, mural.scrollWidth - window.innerWidth);
+            mural.style.transform = `translateX(${-muralMove * maxShift}px)`;
+          } else {
+            muralWrap.style.pointerEvents = "none";
+          }
         }
       }
 
