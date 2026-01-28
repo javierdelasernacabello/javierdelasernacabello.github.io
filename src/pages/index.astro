@@ -128,6 +128,7 @@ const heroUrl = "/cracked.jpeg";
       @media (max-width: 700px){
         .frame{ grid-template-columns: 1fr 32vw; }
         .strip-text{ font-size: clamp(44px, 14vw, 120px); }
+        .name-text{ font-size: clamp(56px, 16vw, 90px); }
       }
     </style>
   </head>
@@ -223,7 +224,9 @@ const heroUrl = "/cracked.jpeg";
         const stripFade = clamp(1 - coverProgress * 4, 0, 1);
         strip.style.opacity = stripFade.toFixed(3);
         
-        const baseStrip = Math.min(window.innerWidth * 0.137, 350);
+        const stripPct = window.innerWidth < 700 ? 0.10 : 0.137;
+        const stripMax = window.innerWidth < 700 ? 260 : 350;
+        const baseStrip = Math.min(window.innerWidth * stripPct, stripMax);
         const stripW = Math.max(0, baseStrip * stripFade);
         frame.style.setProperty("--strip-w", `${stripW.toFixed(2)}px`);
 
