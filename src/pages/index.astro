@@ -161,7 +161,6 @@ const heroUrl = "/cracked.jpeg";
 
           <div class="mural-wrap" id="muralWrap">
             <div id="mural">
-              <img src="/images/img_0.jpg" alt="0" />
               <img src="/images/img_1.jpg" alt="1" />
               <img src="/images/img_2.jpg" alt="2" />
               <img src="/images/img_3.jpg" alt="3" />
@@ -264,7 +263,7 @@ const heroUrl = "/cracked.jpeg";
           // Solo activamos el movimiento si el mural es visible
           if (muralFade > 0) {
             muralWrap.style.pointerEvents = "auto";
-            const muralMove = clamp((progress - 0.16) / 0.78, 0, 1);
+            const muralMove = clamp((progress - 0.18) / 0.78, 0, 1);
             const maxShift = Math.max(0, mural.scrollWidth - window.innerWidth);
             mural.style.transform = `translateX(${-muralMove * maxShift}px)`;
           } else {
