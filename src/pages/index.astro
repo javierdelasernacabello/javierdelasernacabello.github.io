@@ -161,6 +161,7 @@ const heroUrl = "/cracked.jpeg";
 
           <div class="mural-wrap" id="muralWrap">
             <div id="mural">
+              <img src="/images/img_0.jpg" alt="0" />
               <img src="/images/img_1.jpg" alt="1" />
               <img src="/images/img_2.jpg" alt="2" />
               <img src="/images/img_3.jpg" alt="3" />
@@ -224,7 +225,7 @@ const heroUrl = "/cracked.jpeg";
         // 2. Parámetros de control
         const isMobile = window.innerWidth < 700;
         // coverProgress controla la velocidad de la primera transición
-        const coverProgress = clamp(progress / 0.20, 0, 1); 
+        const coverProgress = clamp(progress / 0.14, 0, 1); 
 
         // --- 1. PORTFOLIO 2026 (El Strip lateral) ---
         // Reducimos fadeSpeed para que no desaparezca de golpe
@@ -247,23 +248,23 @@ const heroUrl = "/cracked.jpeg";
         hero.style.transform = `scale(${scale.toFixed(4)})`;
 
         // Controlamos la opacidad de la imagen de fondo
-        const imageOpacity = clamp(1 - (progress - 0.15) * 15, 0, 1);
+        const imageOpacity = clamp(1 - (progress - 0.10) * 20, 0, 1);
         hero.style.opacity = imageOpacity.toFixed(3);
 
         // --- 3. NOMBRE (Javier de la Serna) ---
-        const nameFadeIn = clamp((progress - 0.01) * 15, 0, 1);
-        const nameFadeOut = clamp((progress - 0.18) * 15, 0, 1);
+        const nameFadeIn = clamp((progress - 0.00) * 20, 0, 1);
+        const nameFadeOut = clamp((progress - 0.12) * 20, 0, 1);
         name.style.opacity = (nameFadeIn * (1 - nameFadeOut)).toFixed(3);
 
         // --- 4. MURAL DE FOTOS ---
         if (muralWrap && mural) {
-          const muralFade = clamp((progress - 0.15) * 10, 0, 1);
+          const muralFade = clamp((progress - 0.15) * 36, 0, 1);
           muralWrap.style.opacity = muralFade.toFixed(3);
           
           // Solo activamos el movimiento si el mural es visible
           if (muralFade > 0) {
             muralWrap.style.pointerEvents = "auto";
-            const muralMove = clamp((progress - 0.22) / 0.78, 0, 1);
+            const muralMove = clamp((progress - 0.16) / 0.78, 0, 1);
             const maxShift = Math.max(0, mural.scrollWidth - window.innerWidth);
             mural.style.transform = `translateX(${-muralMove * maxShift}px)`;
           } else {
